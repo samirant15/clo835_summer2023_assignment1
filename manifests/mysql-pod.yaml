@@ -12,3 +12,9 @@ spec:
     image: 851725639640.dkr.ecr.us-east-1.amazonaws.com/clo835-mysql:latest
     ports:
     - containerPort: 3306
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysql-secret
+          key: MYSQL_ROOT_PASSWORD
