@@ -5,6 +5,8 @@ metadata:
   labels:
     app: employees
 spec:
+  imagePullSecrets:
+  - name: credentials
   containers:
   - name: webapp
     image: 851725639640.dkr.ecr.us-east-1.amazonaws.com/clo835-webapp

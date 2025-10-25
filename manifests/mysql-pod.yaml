@@ -5,6 +5,8 @@ metadata:
   labels:
     app: mysql
 spec:
+  imagePullSecrets:
+  - name: credentials
   containers:
   - name: mysql
     image: 851725639640.dkr.ecr.us-east-1.amazonaws.com/clo835-mysql:latest
