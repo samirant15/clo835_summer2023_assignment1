@@ -1,4 +1,5 @@
 FROM ubuntu:20.04
+ENV APP_COLOR=lime
 RUN apt-get update -y
 COPY . /app
 WORKDIR /app
