@@ -40,8 +40,3 @@ spec:
             secretKeyRef:
               name: webapp-secret
               key: DBPWD
-        - name: APP_COLOR
-          valueFrom:
-            secretKeyRef:
-              name: webapp-secret
-              key: APP_COLOR
