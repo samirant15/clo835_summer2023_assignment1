@@ -65,6 +65,7 @@ def AddEmp():
 
   
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
+    db_conn.ping(reconnect=True)
     cursor = db_conn.cursor()
 
     try:
@@ -90,6 +91,7 @@ def FetchData():
 
     output = {}
     select_sql = "SELECT emp_id, first_name, last_name, primary_skill, location from employee where emp_id=%s"
+    db_conn.ping(reconnect=True)
     cursor = db_conn.cursor()
 
     try:

@@ -49,3 +49,5 @@ spec:
           value: "mysql"
         - name: DBPORT
           value: "3306"
+        - name: DATABASE
+          value: "employees"
