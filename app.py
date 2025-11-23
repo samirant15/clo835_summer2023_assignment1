@@ -13,6 +13,8 @@ DBPWD = os.environ.get("DBPWD") or "passwors"
 DATABASE = os.environ.get("DATABASE") or "employees"
 COLOR_FROM_ENV = os.environ.get('APP_COLOR') or "lime"
 DBPORT = int(os.environ.get("DBPORT"))
+BG_IMAGE_LOCAL_PATH = os.environ.get("BG_IMAGE_LOCAL_PATH", "/static/image.png")
+HEADER_NAME = os.getenv("HEADER_NAME", "Samir,Liliana,Yasmin")
 
 # Create a connection to the MySQL database
 db_conn = connections.Connection(
@@ -21,7 +23,6 @@ db_conn = connections.Connection(
     user= DBUSER,
     password= DBPWD, 
     db= DATABASE
-    
 )
 output = {}
 table = 'employee';
@@ -47,7 +48,8 @@ COLOR = random.choice(["red", "green", "blue", "blue2", "darkblue", "pink", "lim
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('addemp.html', color=color_codes[COLOR])
+    app.logger.info(f"Background image path: {BG_IMAGE_LOCAL_PATH}")
+    return render_template('addemp.html', bg_image_path=BG_IMAGE_LOCAL_PATH, header_name=HEADER_NAME)
 
 @app.route("/about", methods=['GET','POST'])
 def about():
@@ -133,4 +135,4 @@ if __name__ == '__main__':
         print("Color not supported. Received '" + COLOR + "' expected one of " + SUPPORTED_COLORS)
         exit(1)
 
-    app.run(host='0.0.0.0',port=8080,debug=True)
+    app.run(host='0.0.0.0',port=81,debug=True)
