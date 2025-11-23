@@ -35,6 +35,11 @@ spec:
             configMapKeyRef:
               name: flask-config
               key: BG_IMAGE_LOCAL_PATH
+        - name: BG_IMAGE_S3_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: flask-config
+              key: BG_IMAGE_S3_KEY
         - name: DBUSER
           valueFrom:
             secretKeyRef:

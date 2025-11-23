@@ -3,6 +3,8 @@ from pymysql import connections
 import os
 import random
 import argparse
+import boto3
+from botocore.exceptions import ClientError
 
 
 app = Flask(__name__)
@@ -15,6 +17,18 @@ COLOR_FROM_ENV = os.environ.get('APP_COLOR') or "lime"
 DBPORT = int(os.environ.get("DBPORT"))
 BG_IMAGE_LOCAL_PATH = os.environ.get("BG_IMAGE_LOCAL_PATH", "/static/image.png")
 HEADER_NAME = os.getenv("HEADER_NAME", "Samir,Liliana,Yasmin")
+BUCKET_NAME = os.getenv("BUCKET_NAME")
+BG_IMAGE_S3_KEY = os.getenv("BG_IMAGE_S3_KEY")
+
+# Function to download background image from S3
+def download_image_from_s3():
+    # Create S3 client and download the image from S3
+    s3_client = boto3.client('s3')
+    s3_url = f"s3://{BUCKET_NAME}/{BG_IMAGE_S3_KEY}"
+    app.logger.info(f"Background image URL: {s3_url}")
+    app.logger.info(f"Downloading image from S3 bucket: {BUCKET_NAME}, key: {BG_IMAGE_S3_KEY}")
+    s3_client.download_file(BUCKET_NAME, BG_IMAGE_S3_KEY, BG_IMAGE_LOCAL_PATH)
+    app.logger.info(f"Successfully downloaded background image to: {BG_IMAGE_LOCAL_PATH}")
 
 # Create a connection to the MySQL database
 db_conn = connections.Connection(
@@ -48,12 +62,14 @@ COLOR = random.choice(["red", "green", "blue", "blue2", "darkblue", "pink", "lim
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    app.logger.info(f"Background image path: {BG_IMAGE_LOCAL_PATH}")
+    s3_url = f"s3://{BUCKET_NAME}/{BG_IMAGE_S3_KEY}" if BUCKET_NAME and BG_IMAGE_S3_KEY else "N/A"
+    app.logger.info(f"Background image URL (S3): {s3_url}")
+    app.logger.info(f"Background image path (local): {BG_IMAGE_LOCAL_PATH}")
     return render_template('addemp.html', bg_image_path=BG_IMAGE_LOCAL_PATH, header_name=HEADER_NAME)
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html', color=color_codes[COLOR])
+    return render_template('about.html', bg_image_path=BG_IMAGE_LOCAL_PATH)
     
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
@@ -78,11 +94,11 @@ def AddEmp():
         cursor.close()
 
     print("all modification done...")
-    return render_template('addempoutput.html', name=emp_name, color=color_codes[COLOR])
+    return render_template('addempoutput.html', name=emp_name, bg_image_path=BG_IMAGE_LOCAL_PATH)
 
 @app.route("/getemp", methods=['GET', 'POST'])
 def GetEmp():
-    return render_template("getemp.html", color=color_codes[COLOR])
+    return render_template("getemp.html", bg_image_path=BG_IMAGE_LOCAL_PATH)
 
 
 @app.route("/fetchdata", methods=['GET','POST'])
@@ -112,9 +128,12 @@ def FetchData():
         cursor.close()
 
     return render_template("getempoutput.html", id=output["emp_id"], fname=output["first_name"],
-                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], color=color_codes[COLOR])
+                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], bg_image_path=BG_IMAGE_LOCAL_PATH)
 
 if __name__ == '__main__':
+    
+    # Download background image from S3
+    download_image_from_s3()
     
     # Check for Command Line Parameters for color
     parser = argparse.ArgumentParser()

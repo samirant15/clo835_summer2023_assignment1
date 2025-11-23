@@ -6,4 +6,5 @@ metadata:
 data:
   HEADER_NAME: "Samir,Liliana,Yasmin"
   BUCKET_NAME: "finalproject-bucket-samir"
+  BG_IMAGE_S3_KEY: "image.png"
   BG_IMAGE_LOCAL_PATH: "./static/image.png"
