@@ -16,7 +16,7 @@ spec:
       serviceAccountName: clo835
       containers:
       - name: flask
-        image: 851725639640.dkr.ecr.<region>.amazonaws.com/flask:latest
+        image: 851725639640.dkr.ecr.us-east-1.amazonaws.com/clo835-webapp
         ports:
           - containerPort: 81
         env:
@@ -47,3 +47,5 @@ spec:
               key: DBPWD
         - name: DBHOST
           value: "mysql"
+        - name: DBPORT
+          value: "3306"

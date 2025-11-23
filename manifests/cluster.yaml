@@ -19,3 +19,8 @@ managedNodeGroups:
       enableSsm: true
     iam:
       instanceRoleARN: arn:aws:iam::851725639640:role/LabRole
+
+addons:
+  - name: aws-ebs-csi-driver
+    version: latest
+    serviceAccountRoleARN: arn:aws:iam::851725639640:role/LabRole

@@ -3,9 +3,11 @@ kind: PersistentVolumeClaim
 metadata:
   name: mysql-pvc
   namespace: final
+  annotations:
+    volume.beta.kubernetes.io/storage-class: gp2
 spec:
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
   resources:
     requests:
       storage: 2Gi
