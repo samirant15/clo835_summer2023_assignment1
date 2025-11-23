@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask
+  namespace: final
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask
+  template:
+    metadata:
+      labels:
+        app: flask
+    spec:
+      serviceAccountName: clo835
+      containers:
+      - name: flask
+        image: 851725639640.dkr.ecr.<region>.amazonaws.com/flask:latest
+        ports:
+          - containerPort: 81
+        env:
+        - name: HEADER_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: flask-config
+              key: HEADER_NAME
+        - name: BUCKET_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: flask-config
+              key: BUCKET_NAME
+        - name: BG_IMAGE_LOCAL_PATH
+          valueFrom:
+            configMapKeyRef:
+              name: flask-config
+              key: BG_IMAGE_LOCAL_PATH
+        - name: DBUSER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: DBUSER
+        - name: DBPWD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: DBPWD
+        - name: DBHOST
+          value: "mysql"
