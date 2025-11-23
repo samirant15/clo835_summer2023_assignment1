@@ -22,8 +22,8 @@ BG_IMAGE_S3_KEY = os.getenv("BG_IMAGE_S3_KEY")
 
 # Function to download background image from S3
 def download_image_from_s3():
-    # Create S3 client and download the image from S3
-    s3_client = boto3.client('s3')
+    # Create S3 client with explicit region (credentials come from environment variables)
+    s3_client = boto3.client('s3', region_name=os.environ.get('AWS_DEFAULT_REGION', 'us-east-1'))
     s3_url = f"s3://{BUCKET_NAME}/{BG_IMAGE_S3_KEY}"
     app.logger.info(f"Background image URL: {s3_url}")
     app.logger.info(f"Downloading image from S3 bucket: {BUCKET_NAME}, key: {BG_IMAGE_S3_KEY}")

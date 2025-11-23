@@ -40,6 +40,23 @@ spec:
             configMapKeyRef:
               name: flask-config
               key: BG_IMAGE_S3_KEY
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-secret
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-secret
+              key: AWS_SECRET_ACCESS_KEY
+        - name: AWS_SESSION_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: aws-secret
+              key: AWS_SESSION_TOKEN
+        - name: AWS_DEFAULT_REGION
+          value: "us-east-1"
         - name: DBUSER
           valueFrom:
             secretKeyRef:
